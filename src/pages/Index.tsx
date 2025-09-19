@@ -19,7 +19,7 @@ const portfolioProjects: Project[] = [
   {
     id: 1,
     title: "Luxury Interior Design",
-    category: "Interior Design",
+    category: "Полиграфия",
     image: "/img/c2c6ab1c-5a3d-4d8f-86a1-86f7f11422bb.jpg",
     description: "Элегантный дизайн интерьера премиум-класса для частного дома",
     details: "Проект включает полную концепцию дизайна интерьера роскошного частного дома площадью 450 кв.м. Использованы натуральные материалы высочайшего качества: мрамор Calacatta, дубовый паркет, бронзовые элементы фурнитуры. Цветовая палитра построена на контрасте глубоких тёмных тонов и светлых акцентов.",
@@ -29,7 +29,7 @@ const portfolioProjects: Project[] = [
   {
     id: 2,
     title: "Premium Brand Identity",
-    category: "Branding",
+    category: "Упаковка",
     image: "/img/64369250-9d4e-44f1-86be-83775da78c5e.jpg",
     description: "Создание фирменного стиля для премиального бренда",
     details: "Разработка комплексной айдентики для люксового бренда включает создание логотипа, фирменных цветов, типографики и всех элементов фирменного стиля. Особое внимание уделено созданию ощущения эксклюзивности и премиальности через минималистичный подход и изысканные детали.",
@@ -39,11 +39,31 @@ const portfolioProjects: Project[] = [
   {
     id: 3,
     title: "Modern Web Interface",
-    category: "UI/UX Design",
+    category: "Веб-дизайн",
     image: "/img/652c8ef0-6ce4-4afc-8aa9-669c1ee31d20.jpg",
     description: "Современный интерфейс мобильного приложения",
     details: "Дизайн пользовательского интерфейса для финтех-приложения с фокусом на простоту использования и элегантность. Интерфейс разработан с учётом принципов минимализма, где каждый элемент имеет функциональное назначение. Использована модульная система компонентов для обеспечения консистентности.",
     technologies: ["UI Design", "UX Research", "Prototyping"],
+    year: "2024"
+  },
+  {
+    id: 4,
+    title: "E-commerce Platform",
+    category: "Маркетплейсы",
+    image: "/img/c2c6ab1c-5a3d-4d8f-86a1-86f7f11422bb.jpg",
+    description: "Дизайн маркетплейса для продажи товаров ручной работы",
+    details: "Создание полноценной платформы для продажи товаров ручной работы с удобной системой каталогизации, поиска и оформления заказов. Особое внимание уделено UX для продавцов и покупателей.",
+    technologies: ["UX/UI Design", "E-commerce", "Mobile First"],
+    year: "2024"
+  },
+  {
+    id: 5,
+    title: "Corporate Presentation",
+    category: "Презентации",
+    image: "/img/64369250-9d4e-44f1-86be-83775da78c5e.jpg",
+    description: "Корпоративная презентация для инвестиционного фонда",
+    details: "Разработка презентации для привлечения инвесторов включает создание визуальной концепции, инфографики и анимированных слайдов. Презентация выполнена в минималистичном стиле с акцентом на данные.",
+    technologies: ["Презентации", "Инфографика", "Анимация"],
     year: "2024"
   }
 ]
@@ -53,6 +73,7 @@ function Index() {
   const [activeSection, setActiveSection] = useState('home')
   const [isEditing, setIsEditing] = useState(false)
   const [editableContent, setEditableContent] = useState<any>({})
+  const [activeFilter, setActiveFilter] = useState('Все')
 
   const sections = [
     { id: 'home', label: 'Главная' },
@@ -61,6 +82,12 @@ function Index() {
     { id: 'services', label: 'Услуги' },
     { id: 'contact', label: 'Контакты' }
   ]
+
+  const filters = ['Все', 'Маркетплейсы', 'Полиграфия', 'Презентации', 'Упаковка', 'Веб-дизайн']
+
+  const filteredProjects = activeFilter === 'Все' 
+    ? portfolioProjects 
+    : portfolioProjects.filter(project => project.category === activeFilter)
 
   const services = [
     {
@@ -133,59 +160,132 @@ function Index() {
       <main className="pt-20">
         {/* Hero Section */}
         {activeSection === 'home' && (
-          <section className="py-20 text-center">
-            <div className="container mx-auto px-6">
-              <h1 className="text-6xl md:text-8xl font-bold mb-6 animate-fade-in">
-                CREATIVE
-                <br />
-                <span className="text-accent">DESIGNER</span>
-              </h1>
-              <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Создаю изысканные дизайнерские решения, которые вдохновляют и запоминаются
-              </p>
-              <div className="flex gap-4 justify-center">
-                <Button 
-                  size="lg" 
-                  onClick={() => setActiveSection('portfolio')}
-                  className="bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  Смотреть портфолио
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  onClick={() => setActiveSection('contact')}
-                >
-                  Связаться
-                </Button>
+          <>
+            <section className="py-20 text-center">
+              <div className="container mx-auto px-6">
+                <h1 className="text-6xl md:text-8xl font-bold mb-6 animate-fade-in">
+                  CREATIVE
+                  <br />
+                  <span className="text-accent">DESIGNER</span>
+                </h1>
+                <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+                  Создаю изысканные дизайнерские решения, которые вдохновляют и запоминаются
+                </p>
+                <div className="flex gap-4 justify-center">
+                  <Button 
+                    size="lg" 
+                    onClick={() => setActiveSection('portfolio')}
+                    className="bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    Смотреть портфолио
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="lg"
+                    onClick={() => setActiveSection('contact')}
+                  >
+                    Связаться
+                  </Button>
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+
+            {/* Projects Section on Home */}
+            <section className="py-20 bg-muted/30">
+              <div className="container mx-auto px-6">
+                <h2 className="text-4xl font-bold mb-8 text-center">Проекты</h2>
+                
+                {/* Filter Buttons */}
+                <div className="flex flex-wrap justify-center gap-2 mb-12">
+                  {filters.map((filter) => (
+                    <Button
+                      key={filter}
+                      variant={activeFilter === filter ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setActiveFilter(filter)}
+                      className={`px-6 py-2 rounded-full transition-all duration-200 ${
+                        activeFilter === filter 
+                          ? 'bg-primary text-primary-foreground' 
+                          : 'border-muted-foreground/20 hover:border-accent text-muted-foreground hover:text-accent'
+                      }`}
+                    >
+                      {filter}
+                    </Button>
+                  ))}
+                </div>
+
+                {/* Projects Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredProjects.map((project) => (
+                    <Card 
+                      key={project.id} 
+                      className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-[1.02] bg-background"
+                      onClick={() => setSelectedProject(project)}
+                    >
+                      <div className="aspect-[4/3] overflow-hidden">
+                        <img 
+                          src={project.image} 
+                          alt={project.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                      <CardContent className="p-6">
+                        <div className="text-xs text-accent mb-2 font-medium">{project.category}</div>
+                        <h3 className="text-lg font-semibold mb-2 line-clamp-1">{project.title}</h3>
+                        <p className="text-muted-foreground text-sm line-clamp-2">{project.description}</p>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </section>
+          </>
         )}
 
         {/* Portfolio Section */}
         {activeSection === 'portfolio' && (
           <section className="py-20">
             <div className="container mx-auto px-6">
-              <h2 className="text-4xl font-bold mb-12 text-center">Портфолио</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {portfolioProjects.map((project) => (
+              <h2 className="text-4xl font-bold mb-8 text-center">Проекты</h2>
+              
+              {/* Filter Buttons */}
+              <div className="flex flex-wrap justify-center gap-2 mb-12">
+                {filters.map((filter) => (
+                  <Button
+                    key={filter}
+                    variant={activeFilter === filter ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setActiveFilter(filter)}
+                    className={`px-6 py-2 rounded-full transition-all duration-200 ${
+                      activeFilter === filter 
+                        ? 'bg-primary text-primary-foreground' 
+                        : 'border-muted-foreground/20 hover:border-accent text-muted-foreground hover:text-accent'
+                    }`}
+                  >
+                    {filter}
+                  </Button>
+                ))}
+              </div>
+
+              {/* Projects Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredProjects.map((project) => (
                   <Card 
                     key={project.id} 
-                    className="group cursor-pointer overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105"
+                    className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
                     onClick={() => setSelectedProject(project)}
                   >
                     <div className="aspect-[4/3] overflow-hidden">
                       <img 
                         src={project.image} 
                         alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                     <CardContent className="p-6">
-                      <div className="text-sm text-accent mb-2">{project.category}</div>
-                      <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                      <p className="text-muted-foreground text-sm">{project.description}</p>
+                      <div className="text-xs text-accent mb-2 font-medium">{project.category}</div>
+                      <h3 className="text-lg font-semibold mb-2 line-clamp-1">{project.title}</h3>
+                      <p className="text-muted-foreground text-sm line-clamp-2">{project.description}</p>
                     </CardContent>
                   </Card>
                 ))}
